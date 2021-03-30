@@ -1,0 +1,90 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/dat/learn/webhooks/AirlineSendAgent/AirlineSendAgent.csproj": {}
+  },
+  "projects": {
+    "/home/dat/learn/webhooks/AirlineSendAgent/AirlineSendAgent.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/dat/learn/webhooks/AirlineSendAgent/AirlineSendAgent.csproj",
+        "projectName": "AirlineSendAgent",
+        "projectPath": "/home/dat/learn/webhooks/AirlineSendAgent/AirlineSendAgent.csproj",
+        "packagesPath": "/home/dat/.nuget/packages/",
+        "outputPath": "/home/dat/learn/webhooks/AirlineSendAgent/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/dat/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
+            "Microsoft.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.Extensions.Http": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "RabbitMQ.Client": {
+              "target": "Package",
+              "version": "[6.2.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.201/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
