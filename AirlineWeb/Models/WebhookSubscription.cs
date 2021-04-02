@@ -6,14 +6,14 @@ namespace AirlineWeb.Model
     {
         [Key]
         [Required]
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
         [Required]
-        public string WebhookURI { get; set; }
+        public virtual string WebhookURI { get; set; }
         [Required]
-        public string Secret { get; set; }
+        public virtual string Secret { get; set; }
         [Required]
-        public string WebhookType { get; set; }
+        public virtual string WebhookType { get; set; }
         [Required]
-        public string WebhookPublisher { get; set; }
+        public virtual string WebhookPublisher { get; set; }
     }
 }
