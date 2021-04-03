@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 namespace AirlineWeb
 {
@@ -29,7 +30,8 @@ namespace AirlineWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AirlineDbContext>(opt =>
-                opt.UseSqlServer(Configuration.GetConnectionString("AirlineConnection")));
+                opt.UseSqlServer(Configuration.GetConnectionString("AirlineConnection"))
+                    .EnableSensitiveDataLogging());
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -48,6 +50,8 @@ namespace AirlineWeb
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AirlineWeb v1"));
             }
 
+            app.UseSerilogRequestLogging();
+            
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
