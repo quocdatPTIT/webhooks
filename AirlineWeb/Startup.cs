@@ -38,6 +38,13 @@ namespace AirlineWeb
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AirlineWeb", Version = "v1" });
             });
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddCors(o => o.AddPolicy("Allow_CORS", builder =>
+            {
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,11 +58,13 @@ namespace AirlineWeb
             }
 
             app.UseSerilogRequestLogging();
-            
+
+            app.UseCors("Allow_CORS");
+
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
-            
+
             app.UseRouting();
 
             app.UseAuthorization();
