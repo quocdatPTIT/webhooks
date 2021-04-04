@@ -22,7 +22,7 @@ namespace TravelAgentWeb
                 {
                     webBuilder.UseStartup<Startup>()
                     .UseKestrel()
-                    .UseUrls("http://0.0.0.0:7000");
+                    .UseUrls("http://0.0.0.0:7500");
                 });
     }
 }
