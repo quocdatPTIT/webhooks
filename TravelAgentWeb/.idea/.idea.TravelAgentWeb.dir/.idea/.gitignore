@@ -1,0 +1,12 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/modules.xml
+/contentModel.xml
+/projectSettingsUpdater.xml
+/.idea.TravelAgentWeb.iml
+/encodings.xml
+/indexLayout.xml
+/riderModule.iml
+/vcs.xml
