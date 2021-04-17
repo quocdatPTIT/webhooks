@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using AirlineWeb.Data;
 using AirlineWeb.Dtos;
+using AirlineWeb.MessageBus;
 using AirlineWeb.Model;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +16,13 @@ namespace AirlineWeb.Controllers
     {
         private readonly AirlineDbContext _context;
         private readonly IMapper _mapper;
-        public FlightDetailController(AirlineDbContext context, IMapper mapper)
+        private readonly IMessageBusClient _messageBusClient;
+
+        public FlightDetailController(AirlineDbContext context, IMapper mapper, IMessageBusClient messageBusClient)
         {
             _context = context;
             _mapper = mapper;
+            _messageBusClient = messageBusClient;
         }
 
         [HttpGet("get-flight-detail-by-code/{flightCode}", Name = "GetFlightDetailByCode")]
@@ -39,7 +43,7 @@ namespace AirlineWeb.Controllers
             var flightDetailModel = _mapper.Map<FlightDetail>(flightDetailCreateDto);
             try
             {
-                await _context.AddAsync(flight);
+                await _context.AddAsync(flightDetailModel);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -60,9 +64,39 @@ namespace AirlineWeb.Controllers
         {
             var flight = await _context.FlightDetails.FirstOrDefaultAsync(f => f.Id == id);
             if (flight is null) return await Task.FromResult(NotFound());
+
+            decimal oldPrice = flight.Price;
+
             _mapper.Map(flightDetailUpdateDto, flight);
-            await _context.SaveChangesAsync();
-            return await Task.FromResult(NoContent());
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+                if (oldPrice != flight.Price)
+                {
+                    Console.WriteLine("Price changed - Place message on bus");
+                    var message = new NotificationMessageDto
+                    {
+                        WebhookType = "pricechange",
+                        OldPrice = oldPrice,
+                        NewPrice = flight.Price,
+                        FlightCode = flight.FlightCode
+                    };
+                    _messageBusClient.SendMessage(message);
+                }
+                else
+                {
+                    Console.WriteLine("No price change");
+                }
+                
+                return await Task.FromResult(NoContent());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw;
+            }
         }
     }
 }

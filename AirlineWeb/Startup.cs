@@ -1,5 +1,6 @@
 using System;
 using AirlineWeb.Data;
+using AirlineWeb.MessageBus;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,7 @@ namespace AirlineWeb
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AirlineWeb", Version = "v1" });
             });
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddSingleton<IMessageBusClient, MessageBusClient>();
             services.AddCors(o => o.AddPolicy("Allow_CORS", builder =>
             {
                 builder
