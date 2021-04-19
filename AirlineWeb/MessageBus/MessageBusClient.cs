@@ -26,5 +26,24 @@ namespace AirlineWeb.MessageBus
                 
             Console.WriteLine("---> Message Published in Message Bus");
         }
+
+        public void SendWebhookSecretMessage(WebhookSecretMessageDto secretMessageDto)
+        {
+            var factory = new ConnectionFactory
+            {
+                HostName = "localhost",
+                Port = 5672
+            };
+            using var connection = factory.CreateConnection();
+            using var channel = connection.CreateModel();
+            channel.ExchangeDeclare("webhook_secret", ExchangeType.Direct);
+
+            var message = JsonSerializer.Serialize(secretMessageDto);
+            var body = Encoding.UTF8.GetBytes(message);
+            
+            channel.BasicPublish("webhook_secret", "webhook", null, body);
+            
+            Console.WriteLine("---> Message Published in Message Bus");
+        }
     }
 }

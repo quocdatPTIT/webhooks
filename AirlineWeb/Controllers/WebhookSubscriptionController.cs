@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using AirlineWeb.Data;
 using AirlineWeb.Dtos;
+using AirlineWeb.MessageBus;
 using AirlineWeb.Model;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +16,13 @@ namespace AirlineWeb.Controllers
     {
         private readonly AirlineDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IMessageBusClient _messageBus;
 
-        public WebhookSubscriptionController(AirlineDbContext context, IMapper mapper)
+        public WebhookSubscriptionController(AirlineDbContext context, IMapper mapper, IMessageBusClient messageBus)
         {
             _context = context;
             _mapper = mapper;
+            _messageBus = messageBus;
         }
 
         [HttpGet("get-subscription-by-code/{secret}", Name = "GetSubscriptionBySecret")]
@@ -45,6 +48,14 @@ namespace AirlineWeb.Controllers
             {
                 await _context.AddAsync(subscription);
                 await _context.SaveChangesAsync();
+
+                var webhookSecret = new WebhookSecretMessageDto
+                {
+                    Publisher = subscription.WebhookPublisher,
+                    Secret = subscription.Secret
+                };
+                
+                _messageBus.SendWebhookSecretMessage(webhookSecret);
             }
             catch (Exception ex)
             {

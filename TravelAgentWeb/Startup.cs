@@ -35,6 +35,7 @@ namespace TravelAgentWeb
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TravelAgentWeb", Version = "v1" });
             });
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddCors(o => o.AddPolicy("Allow_CORS", builder =>
             {
                 builder
